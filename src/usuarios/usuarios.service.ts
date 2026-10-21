@@ -1,28 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Usuario, UsuarioDocument } from './usuario.schema';
 
 @Injectable()
 export class UsuariosService {
-    constructor() {
-        console.log('UsuariosService initialized');
+    constructor(
+        @InjectModel(Usuario.name)
+        private readonly usuarioModel: Model<UsuarioDocument>,
+    ) {}
+
+    async getAll(): Promise<Usuario[]> {
+        return this.usuarioModel.find().exec();
     }
 
-    getAll() {
-        return 'Todos los usuarios';
+    async getById(id: string): Promise<Usuario> {
+        const usuario = await this.usuarioModel.findById(id).exec();
+        if (!usuario) {
+            throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+        }
+        return usuario;
     }
 
-    getById(id: string): string {
-        return `Usuario con ID: ${id}`;
+    async create(createUsuarioDto: any): Promise<Usuario> {
+        return this.usuarioModel.create(createUsuarioDto);
     }
 
-    create(createUsuarioDto: any): string {
-        return 'Usuario creado';
+    async update(id: string, updateUsuarioDto: any): Promise<Usuario> {
+        const usuario = await this.usuarioModel
+            .findByIdAndUpdate(id, updateUsuarioDto, { new: true })
+            .exec();
+        if (!usuario) {
+            throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+        }
+        return usuario;
     }
 
-    update(id: string, updateUsuarioDto: any): string {
-        return `Usuario con ID: ${id} actualizado`;
-    }
-
-    delete(id: string): string {
-        return `Usuario con ID: ${id} eliminado`;
+    async delete(id: string): Promise<Usuario> {
+        // Baja lógica: el README prohíbe borrar usuarios físicamente.
+        const usuario = await this.usuarioModel
+            .findByIdAndUpdate(id, { habilitado: false }, { new: true })
+            .exec();
+        if (!usuario) {
+            throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+        }
+        return usuario;
     }
 }
