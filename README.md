@@ -12,23 +12,24 @@
 
 ## 0. Estado actual (ACTUALIZAR EN CADA SESIÓN)
 
-**Fecha de última actualización:** 2026-10-20
-**Sprint en curso:** _(completar)_
-**Último día de trabajo completado:** _(completar)_
+**Fecha de última actualización:** 2026-10-22
+**Sprint en curso:** Sprint #1 – Base, registro y login (back, en progreso)
+**Último día de trabajo completado:** Día 2-3: módulo `auth` (`src/auth/`) con `PasswordHasher` (node:crypto), DTOs validados, `POST /auth/registro` y `POST /auth/login` con JWT (15 min), probados manualmente con curl. Módulo `publicaciones` creado (esquema `Publicacion` + módulo registrado; controller/service quedan para el Sprint #2). El módulo `usuarios` actual (`src/usuarios/*`, CRUD genérico sin DTOs tipados) sigue siendo solo una prueba de la conexión a la BD, **no** corresponde a ningún punto del enunciado todavía y se reescribirá cuando toque el Sprint #4 (dashboard admin).
 
 ### Resumen de progreso por sprint
 | Sprint | Front | Back | Estado |
 |---|---|---|---|
-| #1 Registro/Login base | [ ] | [ ] | Sin iniciar / completar |
-| #2 Publicaciones y Mi Perfil | [ ] | [ ] | Sin iniciar / completar |
-| #3 Comentarios, JWT y sesión | [ ] | [ ] | Sin iniciar / completar |
-| #4 Admin, estadísticas, PWA, pipes/directivas | [ ] | [ ] | Sin iniciar / completar |
+| #1 Registro/Login base | [ ] | [x] | Back completo: proyecto, 3 módulos creados, Autenticación (registro/login) funcional |
+| #2 Publicaciones y Mi Perfil | [ ] | [ ] | Sin iniciar |
+| #3 Comentarios, JWT y sesión | [ ] | [ ] | Sin iniciar |
+| #4 Admin, estadísticas, PWA, pipes/directivas | [ ] | [ ] | Sin iniciar |
 
 ### Próximo paso
-_(Completar. Si no hay nada hecho todavía: empezar por Sprint #1, Día 1 – creación de ambos proyectos.)_
+El back del Sprint #1 está completo. Falta todo el **frontend** del Sprint #1 (proyecto Angular, pantallas Registro/Login/Publicaciones/MiPerfil, deploy, favicon, navegación) — ver sección 3, Sprint #1, Front.
 
 ### Bloqueos / decisiones pendientes
-- _(ninguno registrado)_
+- **No se usa bcrypt** (no se vio en la cursada): el hash de contraseñas se hace con un servicio propio `PasswordHasher` implementado con el módulo nativo `node:crypto`.
+- **No se usa Multer** (no se vio en la cursada): la subida de imágenes (perfil y publicaciones) se hará más adelante con **Supabase Storage**. Confirmado que esto **no es prioridad ahora**: el registro de usuarios se implementa sin campo de imagen por el momento.
 
 ---
 
@@ -85,21 +86,23 @@ La "Red social" es una aplicación dividida en **dos proyectos** (frontend y bac
   - [ ] Atributo `perfil`: por defecto "usuario", modificable a "administrador".
 
 **Back**
-- [ ] Crear proyecto NestJS.
-- [ ] Módulos: Publicaciones, Autenticación, Usuarios.
-- [ ] **Módulo Autenticación**
-  - [ ] Ruta registro (**POST**): recibe todos los datos, los valida y guarda en la BD.
-    - [ ] Contraseña encriptada.
-    - [ ] Recibe la imagen de perfil, la guarda apropiadamente y guarda la URL en la BD.
-  - [ ] Ruta login (**POST**): recibe usuario/correo y contraseña sin encriptar.
-    - [ ] Encripta/compara la contraseña para confirmar el login.
-    - [ ] Devuelve todos los datos del usuario.
+- [x] Crear proyecto NestJS.
+- [x] Módulos: Publicaciones, Autenticación, Usuarios. _(Publicaciones: solo esquema + módulo creados, el controller/service es Sprint #2. Usuarios sigue siendo el módulo de prueba.)_
+- [x] **Módulo Autenticación**
+  - [x] Ruta registro (**POST** `/auth/registro`): recibe todos los datos, los valida (class-validator) y guarda en la BD.
+    - [x] Contraseña hasheada con `PasswordHasher` propio (`node:crypto`, scrypt + salt), **no bcrypt**.
+    - [ ] Imagen de perfil: pospuesta, se integrará más adelante con **Supabase Storage** (no Multer). No bloquea el registro por ahora.
+  - [x] Ruta login (**POST** `/auth/login`): recibe usuario/correo y contraseña sin encriptar.
+    - [x] Verifica la contraseña con `PasswordHasher` para confirmar el login.
+    - [x] Devuelve todos los datos del usuario + JWT (expira a los 15 min).
+
+> Probado manualmente: registro (201), registro duplicado por correo (409), password débil (400), login por correo y por nombre de usuario (200), login con contraseña incorrecta (401).
 
 **Plan de trabajo diario sugerido**
 | Día | Tareas |
 |---|---|
 | 1 | Crear proyectos Angular y Nest; conectar MongoDB; estructura de módulos; favicon; layout base y estilos globales. |
-| 2 | Back: esquema Usuario, `POST /auth/registro` con validaciones (class-validator), hash de contraseña, subida de imagen (Multer). |
+| 2 | Back: esquema Usuario, `POST /auth/registro` con validaciones (class-validator), hash de contraseña con `PasswordHasher` propio. Sin subida de imagen por ahora (se pospone a Supabase). |
 | 3 | Back: `POST /auth/login` (usuario o correo), status codes correctos, manejo de errores. Probar con Postman/Thunder. |
 | 4 | Front: pantalla Registro (reactive forms, validaciones, file input) y Login con modales de error/éxito. |
 | 5 | Front: pantallas Publicaciones y MiPerfil (esqueleto), routing, navegación. Integración front↔back. |
