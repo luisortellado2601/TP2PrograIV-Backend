@@ -47,6 +47,7 @@ export class AuthService {
       contrasena: this.passwordHasher.hash(dto.contrasena),
       fechaNacimiento: dto.fechaNacimiento,
       descripcion: dto.descripcion,
+      perfil: dto.perfil,
     });
 
     return this.construirRespuesta(usuario);
@@ -72,9 +73,7 @@ export class AuthService {
     }
 
     if (!usuario.habilitado) {
-      throw new UnauthorizedException(
-        'El usuario se encuentra deshabilitado',
-      );
+      throw new UnauthorizedException('El usuario se encuentra deshabilitado');
     }
 
     return this.construirRespuesta(usuario);

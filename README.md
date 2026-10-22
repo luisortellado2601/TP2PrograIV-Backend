@@ -13,23 +13,23 @@
 ## 0. Estado actual (ACTUALIZAR EN CADA SESIÓN)
 
 **Fecha de última actualización:** 2026-10-22
-**Sprint en curso:** Sprint #1 – Base, registro y login (back, en progreso)
-**Último día de trabajo completado:** Día 2-3: módulo `auth` (`src/auth/`) con `PasswordHasher` (node:crypto), DTOs validados, `POST /auth/registro` y `POST /auth/login` con JWT (15 min), probados manualmente con curl. Módulo `publicaciones` creado (esquema `Publicacion` + módulo registrado; controller/service quedan para el Sprint #2). El módulo `usuarios` actual (`src/usuarios/*`, CRUD genérico sin DTOs tipados) sigue siendo solo una prueba de la conexión a la BD, **no** corresponde a ningún punto del enunciado todavía y se reescribirá cuando toque el Sprint #4 (dashboard admin).
+**Sprint en curso:** Sprint #1 – Base, registro y login (front completo, falta deploy)
+**Último día de trabajo completado:** Front del Sprint #1: proyecto Angular con sistema de diseño propio (SCSS, sin librerías UI), `AuthService` + `ModalService` (modales propios, sin `alert()`), guards de rutas (`authGuard`/`guestGuard`), componentes **Login** y **Registro** (reactive forms con validaciones acordes al back, selector de perfil usuario/administrador), esqueletos de **Publicaciones** y **MiPerfil** (contenido completo queda para Sprint #2), header de navegación y favicon propio (SVG). Se agregó el campo `perfil` al `RegistroDto`/`AuthService.registro()` del back (antes no lo aceptaba) y `app.enableCors()` en `main.ts` para que el front pueda consumir la API. Probado end-to-end con curl (registro con perfil administrador, login correcto/incorrecto, preflight CORS) y manualmente sirviendo `ng serve` + `nest start:dev`. Se decidió no incluir el campo `file` de imagen de perfil todavía (ver bloqueo ya existente sobre Supabase Storage).
 
 ### Resumen de progreso por sprint
 | Sprint | Front | Back | Estado |
 |---|---|---|---|
-| #1 Registro/Login base | [ ] | [x] | Back completo: proyecto, 3 módulos creados, Autenticación (registro/login) funcional |
+| #1 Registro/Login base | [x] | [x] | Completo salvo deploy en hosting (pendiente) |
 | #2 Publicaciones y Mi Perfil | [ ] | [ ] | Sin iniciar |
 | #3 Comentarios, JWT y sesión | [ ] | [ ] | Sin iniciar |
 | #4 Admin, estadísticas, PWA, pipes/directivas | [ ] | [ ] | Sin iniciar |
 
 ### Próximo paso
-El back del Sprint #1 está completo. Falta todo el **frontend** del Sprint #1 (proyecto Angular, pantallas Registro/Login/Publicaciones/MiPerfil, deploy, favicon, navegación) — ver sección 3, Sprint #1, Front.
+Falta el **deploy en hosting** del front (y back si corresponde) para cerrar el Sprint #1 del todo. Después, arrancar Sprint #2 (Publicaciones y Mi Perfil reales) — ver sección 3.
 
 ### Bloqueos / decisiones pendientes
 - **No se usa bcrypt** (no se vio en la cursada): el hash de contraseñas se hace con un servicio propio `PasswordHasher` implementado con el módulo nativo `node:crypto`.
-- **No se usa Multer** (no se vio en la cursada): la subida de imágenes (perfil y publicaciones) se hará más adelante con **Supabase Storage**. Confirmado que esto **no es prioridad ahora**: el registro de usuarios se implementa sin campo de imagen por el momento.
+- **No se usa Multer** (no se vio en la cursada): la subida de imágenes (perfil y publicaciones) se hará más adelante con **Supabase Storage**. Confirmado que esto **no es prioridad ahora**: el registro de usuarios se implementa sin campo de imagen por el momento (ni en el form del front ni en el DTO del back).
 
 ---
 
@@ -70,20 +70,20 @@ La "Red social" es una aplicación dividida en **dos proyectos** (frontend y bac
 ### SPRINT #1 – Base, registro y login
 
 **Front**
-- [ ] Crear proyecto Angular.
-- [ ] Pantallas: Registro, Login, Publicaciones, MiPerfil.
+- [x] Crear proyecto Angular.
+- [x] Pantallas: Registro, Login, Publicaciones, MiPerfil. _(Publicaciones y MiPerfil son esqueletos navegables; el contenido real es Sprint #2.)_
 - [ ] Deploy en hosting.
-- [ ] Navegación entre componentes (sin límites de accesibilidad por ahora).
-- [ ] Favicon propio.
-- [ ] **Componente Login**
-  - [ ] Formulario con validaciones y mensajes acordes.
-  - [ ] Login por correo **o** nombre de usuario (el elegido debe ser único en la base de datos).
-  - [ ] Contraseña: mínimo 8 caracteres, una mayúscula y un número.
-- [ ] **Componente Registro**
-  - [ ] Formulario con validaciones y mensajes acordes.
-  - [ ] Campos: nombre, apellido, correo, nombre de usuario, contraseña, repetir contraseña, fecha de nacimiento, descripción breve.
-  - [ ] Campo `file` para imagen de perfil.
-  - [ ] Atributo `perfil`: por defecto "usuario", modificable a "administrador".
+- [x] Navegación entre componentes (sin límites de accesibilidad por ahora).
+- [x] Favicon propio.
+- [x] **Componente Login**
+  - [x] Formulario con validaciones y mensajes acordes.
+  - [x] Login por correo **o** nombre de usuario (el elegido debe ser único en la base de datos).
+  - [x] Contraseña: mínimo 8 caracteres, una mayúscula y un número.
+- [x] **Componente Registro**
+  - [x] Formulario con validaciones y mensajes acordes.
+  - [x] Campos: nombre, apellido, correo, nombre de usuario, contraseña, repetir contraseña, fecha de nacimiento, descripción breve.
+  - [ ] Campo `file` para imagen de perfil. _(Diferido a propósito: ver bloqueo de Supabase Storage en la sección 0.)_
+  - [x] Atributo `perfil`: por defecto "usuario", modificable a "administrador". _(Requirió agregar el campo al `RegistroDto`/`AuthService` del back, que no lo aceptaba.)_
 
 **Back**
 - [x] Crear proyecto NestJS.

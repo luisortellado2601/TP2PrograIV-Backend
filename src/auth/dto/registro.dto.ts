@@ -1,12 +1,14 @@
 import {
   IsDateString,
   IsEmail,
+  IsEnum,
   IsOptional,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { PerfilUsuario } from '../../usuarios/usuario.schema';
 
 export class RegistroDto {
   @IsString({ message: 'El nombre es obligatorio' })
@@ -44,4 +46,10 @@ export class RegistroDto {
     message: 'La descripción no puede superar los 280 caracteres',
   })
   descripcion?: string;
+
+  @IsOptional()
+  @IsEnum(PerfilUsuario, {
+    message: 'El perfil debe ser usuario o administrador',
+  })
+  perfil?: PerfilUsuario;
 }
