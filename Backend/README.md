@@ -275,4 +275,5 @@ La "Red social" es una aplicación dividida en **dos proyectos** (frontend y bac
 2. Si el estado está vacío, inspeccionar el repositorio (front y back) para determinar qué está hecho y completar la sección 0 antes de programar.
 3. Trabajar siguiendo el **plan diario** del sprint en curso; no adelantar sprints sin acordarlo.
 4. Al terminar cada tarea: marcar el checkbox correspondiente y actualizar **Próximo paso** y **Fecha de última actualización**.
-5. Cada requisito del enunciado debe quedar implementado literalmente; ante ambigüedad, anotarla en "Bloqueos / decisiones pendientes" y consultar.
+5. Cada requisito del enunciado debe quedar implementado literalmente; ante ambigüedad, anotarla en "Bloqueos / decisiones pendientes" y consultar. 
+ 
