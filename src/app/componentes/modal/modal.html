@@ -1,0 +1,17 @@
+@if (modalService.estado(); as estado) {
+  <div class="modal-overlay" (click)="cerrar()">
+    <div class="modal-box modal-box--{{ estado.tipo }}" (click)="$event.stopPropagation()">
+      <h3>{{ estado.titulo }}</h3>
+      <p>{{ estado.mensaje }}</p>
+
+      <div class="modal-actions">
+        @if (estado.tipo === 'confirmacion') {
+          <button class="btn btn-secondary" type="button" (click)="cerrar()">Cancelar</button>
+          <button class="btn btn-primary" type="button" (click)="confirmar()">Confirmar</button>
+        } @else {
+          <button class="btn btn-primary" type="button" (click)="cerrar()">Aceptar</button>
+        }
+      </div>
+    </div>
+  </div>
+}

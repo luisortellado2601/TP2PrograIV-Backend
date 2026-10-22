@@ -1,12 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Navbar } from './componentes/navbar/navbar';
+import { Modal } from './componentes/modal/modal';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar, Modal],
   selector: 'app-root',
-  styleUrl: './app.scss',
+  styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('nextplay-frontend');
-}
+export class App {}
