@@ -1,0 +1,46 @@
+<div class="page">
+  <div class="card card--narrow">
+    <h2 class="text-center">Ingresar a NextPlay</h2>
+    <p class="text-center text-muted">Encontrá tu próximo equipo.</p>
+
+    <form [formGroup]="form" (ngSubmit)="enviar()">
+      <div class="form-field">
+        <label for="usuarioOCorreo">Correo o nombre de usuario</label>
+        <input
+          id="usuarioOCorreo"
+          type="text"
+          formControlName="usuarioOCorreo"
+          [class.is-invalid]="
+            form.controls.usuarioOCorreo.invalid && form.controls.usuarioOCorreo.touched
+          "
+        />
+        @if (form.controls.usuarioOCorreo.invalid && form.controls.usuarioOCorreo.touched) {
+          <span class="form-field__error">Ingresá tu correo o nombre de usuario.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="contrasena">Contraseña</label>
+        <input
+          id="contrasena"
+          type="password"
+          formControlName="contrasena"
+          [class.is-invalid]="form.controls.contrasena.invalid && form.controls.contrasena.touched"
+        />
+        @if (form.controls.contrasena.invalid && form.controls.contrasena.touched) {
+          <span class="form-field__error">
+            La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.
+          </span>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" [disabled]="enviando()">
+          {{ enviando() ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+      </div>
+    </form>
+
+    <p class="form-footer-text">¿No tenés cuenta? <a routerLink="/registro">Creá una acá</a></p>
+  </div>
+</div>

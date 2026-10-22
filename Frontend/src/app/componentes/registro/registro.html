@@ -1,0 +1,136 @@
+<div class="page">
+  <div class="card card--narrow">
+    <h2 class="text-center">Crear cuenta en NextPlay</h2>
+    <p class="text-center text-muted">Sumate a la comunidad y encontrá con quién jugar.</p>
+
+    <form [formGroup]="form" (ngSubmit)="enviar()">
+      <div class="form-field">
+        <label for="nombre">Nombre</label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          [class.is-invalid]="form.controls.nombre.invalid && form.controls.nombre.touched"
+        />
+        @if (form.controls.nombre.invalid && form.controls.nombre.touched) {
+          <span class="form-field__error">El nombre es obligatorio.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="apellido">Apellido</label>
+        <input
+          id="apellido"
+          type="text"
+          formControlName="apellido"
+          [class.is-invalid]="form.controls.apellido.invalid && form.controls.apellido.touched"
+        />
+        @if (form.controls.apellido.invalid && form.controls.apellido.touched) {
+          <span class="form-field__error">El apellido es obligatorio.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="correo">Correo</label>
+        <input
+          id="correo"
+          type="email"
+          formControlName="correo"
+          [class.is-invalid]="form.controls.correo.invalid && form.controls.correo.touched"
+        />
+        @if (form.controls.correo.invalid && form.controls.correo.touched) {
+          <span class="form-field__error">Ingresá un correo válido.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="nombreUsuario">Nombre de usuario</label>
+        <input
+          id="nombreUsuario"
+          type="text"
+          formControlName="nombreUsuario"
+          [class.is-invalid]="
+            form.controls.nombreUsuario.invalid && form.controls.nombreUsuario.touched
+          "
+        />
+        @if (form.controls.nombreUsuario.invalid && form.controls.nombreUsuario.touched) {
+          <span class="form-field__error">Debe tener al menos 3 caracteres.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="contrasena">Contraseña</label>
+        <input
+          id="contrasena"
+          type="password"
+          formControlName="contrasena"
+          [class.is-invalid]="form.controls.contrasena.invalid && form.controls.contrasena.touched"
+        />
+        @if (form.controls.contrasena.invalid && form.controls.contrasena.touched) {
+          <span class="form-field__error">
+            Mínimo 8 caracteres, con al menos una mayúscula y un número.
+          </span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="repetirContrasena">Repetir contraseña</label>
+        <input
+          id="repetirContrasena"
+          type="password"
+          formControlName="repetirContrasena"
+          [class.is-invalid]="
+            form.controls.repetirContrasena.touched &&
+            (form.controls.repetirContrasena.invalid || form.errors?.['contrasenasDistintas'])
+          "
+        />
+        @if (
+          form.controls.repetirContrasena.touched &&
+          (form.controls.repetirContrasena.invalid || form.errors?.['contrasenasDistintas'])
+        ) {
+          <span class="form-field__error">Las contraseñas no coinciden.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="fechaNacimiento">Fecha de nacimiento</label>
+        <input
+          id="fechaNacimiento"
+          type="date"
+          formControlName="fechaNacimiento"
+          [class.is-invalid]="
+            form.controls.fechaNacimiento.invalid && form.controls.fechaNacimiento.touched
+          "
+        />
+        @if (form.controls.fechaNacimiento.invalid && form.controls.fechaNacimiento.touched) {
+          <span class="form-field__error">La fecha de nacimiento es obligatoria.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="descripcion">Descripción breve</label>
+        <textarea id="descripcion" rows="3" formControlName="descripcion"></textarea>
+        @if (form.controls.descripcion.invalid && form.controls.descripcion.touched) {
+          <span class="form-field__error">Máximo 280 caracteres.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="perfil">Perfil</label>
+        <select id="perfil" formControlName="perfil">
+          @for (perfil of perfiles; track perfil) {
+            <option [value]="perfil">{{ perfil }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" [disabled]="enviando()">
+          {{ enviando() ? 'Creando cuenta...' : 'Crear cuenta' }}
+        </button>
+      </div>
+    </form>
+
+    <p class="form-footer-text">¿Ya tenés cuenta? <a routerLink="/login">Ingresá acá</a></p>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<nav class="navbar">
+  <a class="navbar__brand" routerLink="/">
+    <span class="navbar__logo">🎮</span>
+    <span>NextPlay</span>
+  </a>
+
+  <div class="navbar__links">
+    @if (authService.estaAutenticado()) {
+      <a routerLink="/publicaciones" routerLinkActive="is-active">Publicaciones</a>
+      <a routerLink="/perfil" routerLinkActive="is-active">Mi perfil</a>
+      <button class="btn btn-secondary" type="button" (click)="cerrarSesion()">
+        Cerrar sesión
+      </button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="is-active">Ingresar</a>
+      <a class="btn btn-primary" routerLink="/registro">Crear cuenta</a>
+    }
+  </div>
+</nav>
